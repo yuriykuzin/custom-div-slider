@@ -1,0 +1,103 @@
+/* General settings (feel free to change): */
+
+.custom-div-slider {
+  width: 60%;
+  margin: 0;
+  padding: 0; 
+  border: 0;
+  position: relative;
+  outline: none;  
+}
+
+/* Slider appearance (can be changed considerable): */
+
+.custom-div-slider__popup {
+  position: absolute;
+  display: inline-block;
+  width: 73px;
+  height: 26px;
+  left: 363px;
+  top: 0px;
+
+  text-align: center;
+  font-size: large;
+  font-weight: bold; 
+  line-height: 150%; 
+    
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,c9c9c9+100 */
+  background: #ffffff; /* Old browsers */
+  background: -moz-linear-gradient(top,  #ffffff 0%, #c9c9c9 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top,  #ffffff 0%,#c9c9c9 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom,  #ffffff 0%,#c9c9c9 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#c9c9c9',GradientType=0 ); /* IE6-9 */
+}
+
+.custom-div-slider__popup::after {
+   content: "";
+   top: 26px;
+   left: 31px;
+   position: absolute;   
+   width: 0; 
+   height: 0;
+   border-top: 7px solid #c9c9c9;
+   border-left: 5px solid transparent; 
+   border-right: 5px solid transparent;      
+}
+
+.custom-div-slider__track {    
+  position: absolute;  
+  top: 36px;
+  left: 0;
+  border: 1px solid #99b5ca;
+  border-radius: 5px;
+  height: 7px;
+  width: 100%;
+  cursor: pointer;
+  
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#3f5866+0,82919d+55,a8b1bc+100 */
+  background: #3f5866; /* Old browsers */
+  background: -moz-linear-gradient(top,  #3f5866 0%, #82919d 55%, #a8b1bc 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top,  #3f5866 0%,#82919d 55%,#a8b1bc 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom,  #3f5866 0%,#82919d 55%,#a8b1bc 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3f5866', endColorstr='#a8b1bc',GradientType=0 ); /* IE6-9 */
+}
+
+.custom-div-slider__track-filled {    
+  position: absolute;
+  top: 36px;  
+  left: 0;
+  width: 50%;
+  cursor: pointer;
+  height: 7px;
+  z-index: 1;
+  border: 1px solid #99b5ca;
+  border-radius: 5px;
+  
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffefae+0,ffe992+33,ffc800+55,ff9800+89,ff9f00+100 */
+  background: #ffefae; /* Old browsers */
+  background: -moz-linear-gradient(top,  #ffefae 0%, #ffe992 33%, #ffc800 55%, #ff9800 89%, #ff9f00 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top,  #ffefae 0%,#ffe992 33%,#ffc800 55%,#ff9800 89%,#ff9f00 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom,  #ffefae 0%,#ffe992 33%,#ffc800 55%,#ff9800 89%,#ff9f00 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffefae', endColorstr='#ff9f00',GradientType=0 ); /* IE6-9 */
+}
+
+.custom-div-slider__thumb {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  top: 33px;
+  left: 49%;
+  height: 11px;
+  width: 11px;
+  z-index: 2;
+  border-radius: 7px;
+  border: 2px solid #FEFEFE;
+  cursor: pointer;
+
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#7fb7ef+0,227ad0+43,175c9e+100 */
+  background: #7fb7ef; /* Old browsers */
+  background: -moz-radial-gradient(center, ellipse cover,  #7fb7ef 0%, #227ad0 43%, #175c9e 100%); /* FF3.6-15 */
+  background: -webkit-radial-gradient(center, ellipse cover,  #7fb7ef 0%,#227ad0 43%,#175c9e 100%); /* Chrome10-25,Safari5.1-6 */
+  background: radial-gradient(ellipse at center,  #7fb7ef 0%,#227ad0 43%,#175c9e 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7fb7ef', endColorstr='#175c9e',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */  
+}
