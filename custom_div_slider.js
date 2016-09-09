@@ -34,13 +34,15 @@ function CustomDivSlider(options) {
   sliderPopup.innerHTML = String(sliderValue).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ") + " $";  
 
   sliderTrackFilled.onclick = sliderTrack.onclick = function(e) {
-    sliderValue = Math.round((e.pageX - sliderTrack.getBoundingClientRect().left) * sliderMax / sliderWidth);    
+    sliderValue = Math.round((e.pageX - sliderTrack.getBoundingClientRect().left) * 
+      sliderMax / sliderWidth);    
     renderValue();  
   }
   
   thumb.onmousedown = function(e) {    
     document.onmousemove = function(e) {
-      sliderValue = Math.round((e.pageX - sliderTrack.getBoundingClientRect().left) * sliderMax / sliderWidth);            
+      sliderValue = Math.round((e.pageX - sliderTrack.getBoundingClientRect().left) * 
+        sliderMax / sliderWidth);            
       if (sliderValue < 0) {
         sliderValue = 0;
       } else if (sliderValue > sliderMax) {
@@ -55,14 +57,11 @@ function CustomDivSlider(options) {
   };
   
   thumb.ontouchstart = function(e) {    
-    if (e.changedTouches.length === 1) {
-      var touch = e.targetTouches[0];
-      var touchOffsetX = touch.pageX - touch.target.offsetLeft;
-      
+    if (e.changedTouches.length === 1) {      
       thumb.ontouchmove = function(e) {
-        if (e.changedTouches.length === 1) {
-          var touch = e.targetTouches[0];
-          sliderValue = Math.round((touch.pageX - sliderTrack.getBoundingClientRect().left) * sliderMax / sliderWidth);
+        if (e.changedTouches.length === 1) {          
+          sliderValue = Math.round((e.targetTouches[0].pageX - 
+            sliderTrack.getBoundingClientRect().left) * sliderMax / sliderWidth);
           if (sliderValue < 0) {
             sliderValue = 0;
           } else if (sliderValue > sliderMax) {
