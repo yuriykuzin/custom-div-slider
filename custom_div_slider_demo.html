@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
 <head>
   <title>CustomDivSlider Demo</title>
@@ -20,9 +20,9 @@
 </head>
 <body>
 
-<div class="custom-div-slider" id="myslider" value="1000" max="4000" tabindex="1"></div>
+<div class="custom-div-slider" id="myslider" data-value="1000" data-max="4000" tabindex="1"></div>
 <script src="custom_div_slider.js"></script>
-<script>var mySliderWidget = new CustomDivSlider({elem: document.getElementById("myslider")});</script>
+<script>var mySliderWidget = new CustomDivSlider(document.getElementById("myslider"));</script>
 
 </body>
 </html>

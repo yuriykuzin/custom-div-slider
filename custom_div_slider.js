@@ -1,12 +1,11 @@
 "use strict"
 
-// Widget declaration:
+// Widget declaration
 
-function CustomDivSlider(options) {
+function CustomDivSlider(elem) {
   
-  var sliderValue, sliderMax, sliderWidth, thumbHalfWidth, popupHalfWidth;
-  
-  var slider = options.elem; 
+  var sliderWidth, thumbHalfWidth, popupHalfWidth;  
+  var slider = elem; 
   var fragment = document.createDocumentFragment();  
   var sliderPopup = document.createElement('div');
   sliderPopup.className = "custom-div-slider__popup";  
@@ -23,82 +22,95 @@ function CustomDivSlider(options) {
   fragment.appendChild(thumb);
   slider.appendChild(fragment);
   
-  sliderValue = +slider.getAttribute("value");  
-  sliderMax = +slider.getAttribute("max");
+  var sliderMax = Number(slider.dataset.max) || 100;
+  var sliderValue = Math.min(Number(slider.dataset.value) || (sliderMax/2), sliderMax);
   
-  if (sliderMax === 0 || isNaN(sliderMax)) sliderMax = 100;
-  if (isNaN(sliderValue)) sliderValue = Math.round(sliderMax / 2);
+  thumbHalfWidth = thumb.clientWidth / 2;
+  popupHalfWidth = sliderPopup.clientWidth / 2;
   
-  thumbHalfWidth = parseFloat(getComputedStyle(thumb).width)/2;
-  popupHalfWidth = parseFloat(getComputedStyle(sliderPopup).width)/2;
-  sliderPopup.innerHTML = String(sliderValue).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ") + " $";  
-
-  sliderTrackFilled.onclick = sliderTrack.onclick = function(e) {
+  renderPopupValue();
+  window.addEventListener("resize", resizeSlider);
+  resizeSlider();
+  slider.focus();
+  
+  var clickOnTrackHandler = function(e) {
     sliderValue = Math.round((e.pageX - sliderTrack.getBoundingClientRect().left) * 
       sliderMax / sliderWidth);    
     renderValue();  
   }
   
-  thumb.onmousedown = function(e) {    
-    document.onmousemove = function(e) {
+  sliderTrackFilled.addEventListener("click", clickOnTrackHandler);
+  sliderTrack.addEventListener("click", clickOnTrackHandler);
+  thumb.addEventListener("click", function(e) {slider.focus();});
+  
+  thumb.addEventListener("mousedown", function(e) { 
+    var mouseMoveHandler = function(e) {      
       sliderValue = Math.round((e.pageX - sliderTrack.getBoundingClientRect().left) * 
         sliderMax / sliderWidth);            
-      if (sliderValue < 0) {
-        sliderValue = 0;
-      } else if (sliderValue > sliderMax) {
-        sliderValue = sliderMax;
-      }      
+      sliderValue = Math.max(0, (Math.min(sliderValue, sliderMax)));
       renderValue();
-    }
-    document.onmouseup = function() {
-      document.onmousemove = document.onmouseup = null;
-    };
-    return false; // disable selection start 
-  };
+      e.preventDefault();      
+    }    
+    var mouseUpHandler = function() {      
+      window.removeEventListener("mousemove", mouseMoveHandler);
+      window.removeEventListener("mouseup", mouseUpHandler);
+    };    
+    window.addEventListener("mousemove", mouseMoveHandler);
+    window.addEventListener("mouseup", mouseUpHandler);        
+  });
   
-  thumb.ontouchstart = function(e) {    
-    if (e.changedTouches.length === 1) {      
-      thumb.ontouchmove = function(e) {
+  var touchStartThumbOrPopupHandler = function(e) {    
+    if (e.changedTouches.length === 1) {            
+      var touchMoveHandler = function(e) {        
         if (e.changedTouches.length === 1) {          
           sliderValue = Math.round((e.targetTouches[0].pageX - 
             sliderTrack.getBoundingClientRect().left) * sliderMax / sliderWidth);
-          if (sliderValue < 0) {
-            sliderValue = 0;
-          } else if (sliderValue > sliderMax) {
-            sliderValue = sliderMax;
-          }      
+          sliderValue = Math.max(0, (Math.min(sliderValue, sliderMax)));
           renderValue();
+          e.preventDefault();      
         }
-      }               
-      
-      document.ontouchend = function() {
-        document.ontouchmove = document.ontouchend = null;
+      }                
+      window.addEventListener("touchmove", touchMoveHandler);            
+      var touchEndHandler = function() {
+        window.removeEventListener("touchmove", touchMoveHandler);
+        window.removeEventListener("touchend", touchEndHandler);        
       };
-    }
-    return false; 
+      window.addEventListener("touchend", touchEndHandler);
+    }    
   };
   
-  slider.onkeydown = function(e) {
+  thumb.addEventListener("touchstart", touchStartThumbOrPopupHandler);
+  sliderPopup.addEventListener("touchstart", touchStartThumbOrPopupHandler);
+  
+  slider.addEventListener("keydown", function(e) { 
     if ((e.keyCode === 38 || e.keyCode === 39) && sliderValue < sliderMax) {
       sliderValue++;      
+      e.preventDefault();
     } else if ((e.keyCode === 37 || e.keyCode === 40) && sliderValue > 0) {
-      sliderValue--;      
+      sliderValue--;     
+      e.preventDefault();      
     }
-    renderValue();
-  }
-  
-  window.addEventListener("resize", resizeSlider);
-  resizeSlider();
-  slider.focus();
+    renderValue();    
+  });
   
   function renderValue() {
     renderThumbPosition();
-    sliderPopup.innerHTML = String(sliderValue).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ") + " $";      
+    renderPopupValue();
   }  
    
   function resizeSlider() {
-    sliderWidth = parseFloat(getComputedStyle(sliderTrack).width);       
+    sliderWidth = sliderTrack.clientWidth;
     renderThumbPosition();
+  }
+  
+// Generates "popupvaluechange" event 
+  
+  function renderPopupValue() {
+    sliderPopup.innerHTML = String(sliderValue).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ") + " $"; 
+    var event = new CustomEvent("popupvaluechange", {
+      detail: { value: sliderValue }
+    });
+    elem.dispatchEvent(event);
   }
   
   function renderThumbPosition() {
@@ -106,20 +118,41 @@ function CustomDivSlider(options) {
     sliderTrackFilled.style.width = sliderValue * sliderWidth / sliderMax + "px";    
     sliderPopup.style.left = sliderValue * sliderWidth / sliderMax - (popupHalfWidth-2) + "px";        
   } 
-
+ 
 //  Public methods:  
   
   Object.defineProperty(this, "value", {
-    get: function() {
+    get: function() {      
       return sliderValue;
+    },
+    set: function(val) {
+      sliderValue = val;
+      renderValue();      
     }
-  });
+  });  
   
-  this.setValue = function(val) {
-    sliderValue = val;
-    renderValue();      
-  }
+  this.addEventListener = function() {
+    return slider.addEventListener(arguments[0], arguments[1], arguments[2], arguments[3]);
+  }  
 }
 
+//  Polyfill for CustomEvent in IE9+
 
+try {
+  new CustomEvent("IE has CustomEvent, but doesn't support constructor");
+} catch (e) {
 
+  window.CustomEvent = function(event, params) {
+    var evt;
+    params = params || {
+      bubbles: false,
+      cancelable: false,
+      detail: undefined
+    };
+    evt = document.createEvent("CustomEvent");
+    evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+    return evt;
+  };
+
+  CustomEvent.prototype = Object.create(window.Event.prototype);
+}
