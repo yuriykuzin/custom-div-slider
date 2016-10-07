@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CustomDivSlider Demo</title>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="custom_div_slider.css"> 
+  <style>
+  body {
+    background: -moz-linear-gradient(top,  #001c4b 0%, #001c4b 9%, #0069b7 53%, #001d4c 100%); 
+    background: -webkit-linear-gradient(top,  #001c4b 0%,#001c4b 9%,#0069b7 53%,#001d4c 100%); 
+    background: linear-gradient(to bottom,  #001c4b 0%,#001c4b 9%,#0069b7 53%,#001d4c 100%); 
+    background-repeat: no-repeat;
+    height: 100vh;
+    font: 0.8em Arial;    
+    padding-top: 400px;
+    padding-left: 100px;
+  }  
+  </style>
+</head>
+<body>
+
+<div class="custom-div-slider" id="myslider" data-value="1000" data-max="4000" tabindex="1"></div>
+<script src="custom_div_slider.js"></script>
+<script>var mySliderWidget = new CustomDivSlider(document.getElementById("myslider"));</script>
+
+</body>
+</html>
+
