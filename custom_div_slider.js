@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 
 // Widget declaration
 
@@ -131,8 +131,8 @@ function CustomDivSlider(elem) {
     }
   });  
   
-  this.addEventListener = function() {
-    return slider.addEventListener(arguments[0], arguments[1], arguments[2], arguments[3]);
+  this.addEventListener = function() {    
+    slider.addEventListener.apply(slider, arguments);       
   }  
 }
 
